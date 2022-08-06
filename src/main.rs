@@ -15,22 +15,23 @@ use glam::*;
 
 // Includes
 mod ball;
+mod player;
 mod config;
 mod meta;
 
 // Imports
 use crate::ball::Ball;
+use crate::player::Player;
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
 
 struct MainState {
     ball: Ball,
+    player: Player
 }
 
 impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
-        let ball_x = SCREEN_WIDTH / 2.;
-        let ball_y = SCREEN_HEIGHT - 40.;
         // Ball is a circle
         let circle = graphics::Mesh::new_circle(
             // Context
@@ -46,19 +47,26 @@ impl MainState {
             // Colour
             Color::WHITE,
         )?;
+        let player = Player {
+            speed: 10.,
+            pos: Pos {
+                x: SCREEN_WIDTH / 2.,
+                y: SCREEN_HEIGHT - 20.,
+            }
+        };
         // Construct a ball
         let ball = Ball {
             circle,
             speed: 5.,
             pos: Pos {
-                x: ball_x,
-                y: ball_y,
+                x: SCREEN_WIDTH / 2.,
+                y: SCREEN_HEIGHT - 20.,
             },
             vel: Vel { dx: 1., dy: -1. },
         };
         // Player is a rectangle (wip)
         // Construct a player (wip)
-        Ok(MainState { ball })
+        Ok(MainState { ball, player })
     }
 }
 
