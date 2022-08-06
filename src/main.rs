@@ -60,6 +60,8 @@ impl MainState {
                 dy: -1.,
             }
         };
+        // Player is a rectangle (wip)
+        // Construct a player (wip)
         Ok(MainState { ball })
     }
 }
