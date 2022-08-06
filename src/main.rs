@@ -4,7 +4,6 @@
  * @author William Hleucka <william.hleucka@gmail.com>
  * @date 2022-08-06
  */
-
 // Create a "Good game easily" lol ggez
 use ggez::{
     event,
@@ -15,17 +14,17 @@ use ggez::{
 use glam::*;
 
 // Includes
-mod config;
 mod ball;
+mod config;
 mod meta;
 
 // Imports
 use crate::ball::Ball;
-use crate::meta::{Pos,Vel};
-use crate::config::{SCREEN_WIDTH,SCREEN_HEIGHT};
+use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
+use crate::meta::{Pos, Vel};
 
 struct MainState {
-    ball: Ball
+    ball: Ball,
 }
 
 impl MainState {
@@ -39,7 +38,7 @@ impl MainState {
             // Mode
             graphics::DrawMode::fill(),
             // Point
-            vec2(0.,0.),
+            vec2(0., 0.),
             // Radius
             5.,
             // Tolerance
@@ -55,10 +54,7 @@ impl MainState {
                 x: ball_x,
                 y: ball_y,
             },
-            vel: Vel {
-                dx: 1.,
-                dy: -1.,
-            }
+            vel: Vel { dx: 1., dy: -1. },
         };
         // Player is a rectangle (wip)
         // Construct a player (wip)
@@ -70,7 +66,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         // Move the ball on the screen
         self.ball.render();
-        self.ball.check_all_collision();
+        self.ball.check_wall_collision();
         Ok(())
     }
 
@@ -81,7 +77,10 @@ impl event::EventHandler<ggez::GameError> for MainState {
         );
 
         // Draw the ball on the screen
-        canvas.draw(&self.ball.circle, Vec2::new(self.ball.pos.x, self.ball.pos.y));
+        canvas.draw(
+            &self.ball.circle,
+            Vec2::new(self.ball.pos.x, self.ball.pos.y),
+        );
 
         canvas.finish(ctx)?;
 
@@ -91,8 +90,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
 pub fn main() -> GameResult {
     let cb = ggez::ContextBuilder::new("ballbreak", "William Hleucka")
-    .window_setup(ggez::conf::WindowSetup::default().title("Ballbreak"))
-    .window_mode(ggez::conf::WindowMode::default().dimensions(SCREEN_WIDTH, SCREEN_HEIGHT));
+        .window_setup(ggez::conf::WindowSetup::default().title("Ballbreak"))
+        .window_mode(ggez::conf::WindowMode::default().dimensions(SCREEN_WIDTH, SCREEN_HEIGHT));
     let (mut ctx, event_loop) = cb.build()?;
     let state = MainState::new(&mut ctx)?;
     event::run(ctx, event_loop, state)

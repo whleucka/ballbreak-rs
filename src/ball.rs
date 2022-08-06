@@ -1,13 +1,13 @@
 // Create a "Good game easily" lol ggez
+use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
+use crate::meta::{Pos, Vel};
 use ggez::graphics;
-use crate::meta::{Pos,Vel};
-use crate::config::{SCREEN_WIDTH,SCREEN_HEIGHT};
 
 pub struct Ball {
-   pub circle: graphics::Mesh,
-   pub speed: f32,
-   pub pos: Pos,
-   pub vel: Vel,
+    pub circle: graphics::Mesh,
+    pub speed: f32,
+    pub pos: Pos,
+    pub vel: Vel,
 }
 
 impl Ball {
@@ -17,7 +17,7 @@ impl Ball {
         self.pos.x = x;
         self.pos.y = y;
     }
-    pub fn check_all_collision(&mut self) {
+    pub fn check_wall_collision(&mut self) {
         if self.pos.x >= SCREEN_WIDTH {
             self.vel.dx = -1.;
         } else if self.pos.x <= 0. {
