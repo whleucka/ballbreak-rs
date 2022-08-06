@@ -14,45 +14,15 @@ use ggez::{
 // Linear algebra lib
 use glam::*;
 
-// Position (x,y coordinates)
-struct Pos {
-    x: f32,
-    y: f32,
-}
+// Includes
+mod ball;
+mod position;
+mod velocity;
 
-// Velocity (x,y delta)
-struct Vel {
-    dx: f32,
-    dy: f32,
-}
-
-struct Ball {
-   circle: graphics::Mesh,
-   speed: f32,
-   pos: Pos,
-   vel: Vel,
-}
-
-impl Ball {
-    fn render(&mut self) {
-        let x = self.pos.x + self.speed * self.vel.dx;
-        let y = self.pos.y + self.speed * self.vel.dy;
-        self.pos.x = x;
-        self.pos.y = y;
-    }
-    fn check_all_collision(&mut self) {
-        if self.pos.x >= 800. {
-            self.vel.dx = -1.;
-        } else if self.pos.x <= 0. {
-            self.vel.dx = 1.;
-        }
-        if self.pos.y >= 600. {
-            self.vel.dy = -1.;
-        } else if self.pos.y <= 0. {
-            self.vel.dy = 1.;
-        }
-    }
-}
+// Imports
+use crate::ball::Ball;
+use crate::position::Pos;
+use crate::velocity::Vel;
 
 struct MainState {
     ball: Ball
