@@ -33,6 +33,27 @@ struct Ball {
    vel: Vel,
 }
 
+impl Ball {
+    fn render(&mut self) {
+        let x = self.pos.x + self.speed * self.vel.dx;
+        let y = self.pos.y + self.speed * self.vel.dy;
+        self.pos.x = x;
+        self.pos.y = y;
+    }
+    fn check_all_collision(&mut self) {
+        if self.pos.x >= 800. {
+            self.vel.dx = -1.;
+        } else if self.pos.x <= 0. {
+            self.vel.dx = 1.;
+        }
+        if self.pos.y >= 600. {
+            self.vel.dy = -1.;
+        } else if self.pos.y <= 0. {
+            self.vel.dy = 1.;
+        }
+    }
+}
+
 struct MainState {
     ball: Ball
 }
@@ -74,10 +95,8 @@ impl MainState {
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         // Move the ball on the screen
-        let x = self.ball.pos.x + self.ball.speed * self.ball.vel.dx;
-        let y = self.ball.pos.y + self.ball.speed * self.ball.vel.dy;
-        self.ball.pos.x = x;
-        self.ball.pos.y = y;
+        self.ball.render();
+        self.ball.check_all_collision();
         Ok(())
     }
 
