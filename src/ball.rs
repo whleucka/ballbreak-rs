@@ -1,7 +1,6 @@
 // Create a "Good game easily" lol ggez
 use ggez::graphics;
-use crate::position::Pos;
-use crate::velocity::Vel;
+use crate::meta::{Pos,Vel};
 
 pub struct Ball {
    pub circle: graphics::Mesh,

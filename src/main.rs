@@ -15,14 +15,14 @@ use ggez::{
 use glam::*;
 
 // Includes
+mod config;
 mod ball;
-mod position;
-mod velocity;
+mod meta;
 
 // Imports
 use crate::ball::Ball;
-use crate::position::Pos;
-use crate::velocity::Vel;
+use crate::meta::{Pos,Vel};
+use crate::config::{SCREEN_WIDTH,SCREEN_HEIGHT};
 
 struct MainState {
     ball: Ball
@@ -86,7 +86,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
 }
 
 pub fn main() -> GameResult {
-    let cb = ggez::ContextBuilder::new("ballbreak", "William Hleucka");
+    let cb = ggez::ContextBuilder::new("ballbreak", "William Hleucka")
+    .window_setup(ggez::conf::WindowSetup::default().title("Ballbreak"))
+    .window_mode(ggez::conf::WindowMode::default().dimensions(SCREEN_WIDTH, SCREEN_HEIGHT));
     let (mut ctx, event_loop) = cb.build()?;
     let state = MainState::new(&mut ctx)?;
     event::run(ctx, event_loop, state)
