@@ -30,8 +30,9 @@ struct MainState {
 
 impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
-        let ball_x = 800. / 2.;
-        let ball_y = 600. - 40.;
+        let ball_x = SCREEN_WIDTH / 2.;
+        let ball_y = SCREEN_HEIGHT - 40.;
+        // Ball is a circle
         let circle = graphics::Mesh::new_circle(
             // Context
             ctx,
@@ -46,6 +47,7 @@ impl MainState {
             // Colour
             Color::WHITE,
         )?;
+        // Construct a ball
         let ball = Ball {
             circle,
             speed: 5.,
