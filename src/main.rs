@@ -46,8 +46,8 @@ impl MainState {
             2.,
             // Colour
             Color::WHITE,
-        // Note the )?; here <- this:
-        // It is a postfix operator that unwraps Result<T, E> and Option<T> values. If applied to Result<T, E> , it unwraps the result and gives you the inner value, propagating the error to the calling function.
+            // Note the )?; here <- this:
+            // It is a postfix operator that unwraps Result<T, E> and Option<T> values. If applied to Result<T, E> , it unwraps the result and gives you the inner value, propagating the error to the calling function.
         )?;
         // Otherwise, I guess we would want to 'unwrap' the value
 
@@ -67,12 +67,9 @@ impl MainState {
             graphics::DrawMode::fill(),
             graphics::Rect::new(
                 // x
-                0.,
-                // y
-                0.,
-                // w
-                60.,
-                // h
+                0., // y
+                0., // w
+                60., // h
                 8.,
             ),
             Color::GREEN,
