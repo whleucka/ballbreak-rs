@@ -15,19 +15,19 @@ use glam::*;
 
 // Includes
 mod ball;
-mod player;
 mod config;
 mod meta;
+mod player;
 
 // Imports
 use crate::ball::Ball;
-use crate::player::Player;
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
+use crate::player::Player;
 
 struct MainState {
     ball: Ball,
-    player: Player
+    player: Player,
 }
 
 impl MainState {
@@ -46,14 +46,11 @@ impl MainState {
             2.,
             // Colour
             Color::WHITE,
+        // Note the )?; here <- this:
+        // It is a postfix operator that unwraps Result<T, E> and Option<T> values. If applied to Result<T, E> , it unwraps the result and gives you the inner value, propagating the error to the calling function.
         )?;
-        let player = Player {
-            speed: 10.,
-            pos: Pos {
-                x: SCREEN_WIDTH / 2.,
-                y: SCREEN_HEIGHT - 20.,
-            }
-        };
+        // Otherwise, I guess we would want to 'unwrap' the value
+
         // Construct a ball
         let ball = Ball {
             circle,
@@ -65,7 +62,30 @@ impl MainState {
             vel: Vel { dx: 1., dy: -1. },
         };
         // Player is a rectangle (wip)
+        let rectangle = graphics::Mesh::new_rectangle(
+            ctx,
+            graphics::DrawMode::fill(),
+            graphics::Rect::new(
+                // x
+                0.,
+                // y
+                0.,
+                // w
+                60.,
+                // h
+                8.,
+            ),
+            Color::GREEN,
+        )?;
         // Construct a player (wip)
+        let player = Player {
+            rectangle,
+            speed: 10.,
+            pos: Pos {
+                x: (SCREEN_WIDTH / 2.) - 45.,
+                y: SCREEN_HEIGHT - 50.,
+            },
+        };
         Ok(MainState { ball, player })
     }
 }
@@ -88,6 +108,11 @@ impl event::EventHandler<ggez::GameError> for MainState {
         canvas.draw(
             &self.ball.circle,
             Vec2::new(self.ball.pos.x, self.ball.pos.y),
+        );
+        // Draw the player on the screen
+        canvas.draw(
+            &self.player.rectangle,
+            Vec2::new(self.player.pos.x, self.player.pos.y),
         );
 
         canvas.finish(ctx)?;
