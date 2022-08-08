@@ -30,4 +30,18 @@ impl Ball {
             self.vel.dy = 1.;
         }
     }
+    pub fn change_direction(&mut self, dx: f32, dy: f32) {
+        if dx != 0. {
+            self.vel.dx = dx;
+        }
+        if dy != 0. {
+            self.vel.dy = dy;
+        }
+    }
+    pub fn is_south(&mut self) -> bool {
+        self.vel.dy == 1.
+    }
+    pub fn is_east(&mut self) -> bool {
+        self.vel.dx == 1.
+    }
 }

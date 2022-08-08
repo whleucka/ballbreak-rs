@@ -91,6 +91,29 @@ impl event::EventHandler<ggez::GameError> for MainState {
         self.ball.render();
         self.ball.check_wall_collision();
         self.player.render();
+
+        let mut ball_x: f32;
+        let mut ball_y: f32;
+        if self.ball.is_east() {
+            ball_x = self.ball.pos.x + self.ball.radius + self.ball.speed;
+        } else {
+            ball_x = self.ball.pos.x - self.ball.radius + self.ball.speed;
+        }
+        if self.ball.is_south() {
+            ball_y = self.ball.pos.y + self.ball.radius + self.ball.speed;
+        } else {
+            ball_y = self.ball.pos.y - self.ball.radius + self.ball.speed;
+        }
+
+        // Check if player hits ball
+        if self.ball.is_south() {
+            if self.ball.pos.y >= self.player.pos.y &&
+                self.ball.pos.y <= self.player.pos.y + self.player.height {
+                    if self.ball.pos.x >= self.player.pos.x && self.ball.pos.x <= self.player.pos.x + self.player.width {
+                        self.ball.change_direction(0., -1.);
+                    }
+                }
+        }
         Ok(())
     }
 

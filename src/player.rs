@@ -23,4 +23,7 @@ impl Player {
             }
         }
     }
+    pub fn is_moving(&mut self) -> bool {
+        self.vel.dx != 0.
+    }
 }
