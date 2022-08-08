@@ -57,7 +57,7 @@ impl MainState {
             },
             vel: Vel { dx: 1., dy: -1. },
         };
-        // Player is a rectangle (wip)
+        // Player is a rectangle
         let rectangle = graphics::Mesh::new_rectangle(
             ctx,
             graphics::DrawMode::fill(),
@@ -69,7 +69,7 @@ impl MainState {
             ),
             Color::GREEN,
         )?;
-        // Construct a player (wip)
+        // Construct a player
         let player = Player {
             rectangle,
             speed: 10.,
