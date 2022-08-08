@@ -65,7 +65,7 @@ impl MainState {
                 0.,  // x
                 0.,  // y
                 60., // w
-                8., // h
+                8.,  // h
             ),
             Color::GREEN,
         )?;
@@ -79,18 +79,17 @@ impl MainState {
                 x: (SCREEN_WIDTH / 2.) - 45.,
                 y: SCREEN_HEIGHT - 50.,
             },
-            vel: Vel { dx: 0., dy: 0. }
+            vel: Vel { dx: 0., dy: 0. },
         };
         Ok(MainState { ball, player })
     }
     fn ball_player_collision(_player: &Player, _ball: &Ball) -> bool {
         // Check if player hits ball
-        if _ball.pos.y >= _player.pos.y &&
-            _ball.pos.y <= _player.pos.y + _player.height {
-                if _ball.pos.x >= _player.pos.x && _ball.pos.x <= _player.pos.x + _player.width {
-                    return true;
-                }
+        if _ball.pos.y >= _player.pos.y && _ball.pos.y <= _player.pos.y + _player.height {
+            if _ball.pos.x >= _player.pos.x && _ball.pos.x <= _player.pos.x + _player.width {
+                return true;
             }
+        }
         false
     }
 }
@@ -134,7 +133,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         match _input.keycode {
             Some(KeyCode::Escape) => event::request_quit(_ctx),
             Some(_) => self.player.vel.dx = 0.,
-            None => {},
+            None => {}
         }
         Ok(())
     }
@@ -148,8 +147,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         match _input.keycode {
             Some(KeyCode::A) | Some(KeyCode::J) => self.player.vel.dx = -1.,
             Some(KeyCode::L) | Some(KeyCode::D) => self.player.vel.dx = 1.,
-            Some(_) => {},
-            None => {},
+            Some(_) => {}
+            None => {}
         }
         Ok(())
     }
