@@ -6,6 +6,7 @@ use ggez::graphics;
 pub struct Ball {
     pub circle: graphics::Mesh,
     pub speed: f32,
+    pub radius: f32,
     pub pos: Pos,
     pub vel: Vel,
 }

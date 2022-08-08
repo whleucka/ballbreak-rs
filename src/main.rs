@@ -35,17 +35,11 @@ impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
         // Ball is a circle
         let circle = graphics::Mesh::new_circle(
-            // Context
             ctx,
-            // Mode
             graphics::DrawMode::fill(),
-            // Point
             vec2(0., 0.),
-            // Radius
-            5.,
-            // Tolerance
-            2.,
-            // Colour
+            5., // r
+            2., // tolerance
             Color::WHITE,
             // Note the )?; here <- this:
             // It is a postfix operator that unwraps Result<T, E> and Option<T> values. If applied to Result<T, E> , it unwraps the result and gives you the inner value, propagating the error to the calling function.
@@ -56,6 +50,7 @@ impl MainState {
         let ball = Ball {
             circle,
             speed: 5.,
+            radius: 5.,
             pos: Pos {
                 x: SCREEN_WIDTH / 2.,
                 y: SCREEN_HEIGHT - 20.,
@@ -67,11 +62,10 @@ impl MainState {
             ctx,
             graphics::DrawMode::fill(),
             graphics::Rect::new(
-                // x
+                0.,  // x
                 0.,  // y
-                0.,  // w
-                60., // h
-                8.,
+                60., // w
+                8., // h
             ),
             Color::GREEN,
         )?;
@@ -79,6 +73,8 @@ impl MainState {
         let player = Player {
             rectangle,
             speed: 10.,
+            width: 60.,
+            height: 8.,
             pos: Pos {
                 x: (SCREEN_WIDTH / 2.) - 45.,
                 y: SCREEN_HEIGHT - 50.,
@@ -136,8 +132,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         _repeat: bool,
     ) -> GameResult {
         match _input.keycode {
-            Some(KeyCode::A) => self.player.vel.dx = -1.,
-            Some(KeyCode::L) => self.player.vel.dx = 1.,
+            Some(KeyCode::A) | Some(KeyCode::J) => self.player.vel.dx = -1.,
+            Some(KeyCode::L) | Some(KeyCode::D) => self.player.vel.dx = 1.,
             Some(_) => {},
             None => {},
         }
