@@ -23,6 +23,15 @@ impl Player {
             }
         }
     }
+    pub fn left(&mut self) {
+        self.vel.dx = -1.;
+    }
+    pub fn right(&mut self) {
+        self.vel.dx = 1.;
+    }
+    pub fn stop(&mut self) {
+        self.vel.dx = 0.;
+    }
     pub fn is_moving(&mut self) -> bool {
         self.vel.dx != 0.
     }

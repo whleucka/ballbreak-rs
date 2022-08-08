@@ -121,7 +121,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
     fn key_up_event(&mut self, _ctx: &mut Context, _input: KeyInput) -> GameResult {
         match _input.keycode {
             Some(KeyCode::Escape) => event::request_quit(_ctx),
-            Some(_) => self.player.vel.dx = 0.,
+            Some(_) => self.player.stop(),
             None => {}
         }
         Ok(())
@@ -134,8 +134,8 @@ impl event::EventHandler<ggez::GameError> for MainState {
         _repeat: bool,
     ) -> GameResult {
         match _input.keycode {
-            Some(KeyCode::A) | Some(KeyCode::J) => self.player.vel.dx = -1.,
-            Some(KeyCode::L) | Some(KeyCode::D) => self.player.vel.dx = 1.,
+            Some(KeyCode::A) | Some(KeyCode::J) => self.player.left(),
+            Some(KeyCode::L) | Some(KeyCode::D) => self.player.right(),
             Some(_) => {}
             None => {}
         }
