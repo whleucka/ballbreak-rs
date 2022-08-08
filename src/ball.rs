@@ -1,4 +1,3 @@
-// Create a "Good game easily" lol ggez
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
 use crate::player::Player;

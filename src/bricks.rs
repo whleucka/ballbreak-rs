@@ -1,5 +1,5 @@
-pub struct Bricks {
-}
+use crate::brick::Brick;
 
-impl Bricks {
+pub struct Bricks {
+    pub bricks: Vec<Brick>
 }
