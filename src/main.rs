@@ -8,6 +8,7 @@
 use ggez::{
     event,
     graphics::{self, Color},
+    input::keyboard::{KeyCode, KeyInput},
     Context, GameResult,
 };
 // Linear algebra lib
@@ -67,8 +68,8 @@ impl MainState {
             graphics::DrawMode::fill(),
             graphics::Rect::new(
                 // x
-                0., // y
-                0., // w
+                0.,  // y
+                0.,  // w
                 60., // h
                 8.,
             ),
@@ -82,6 +83,7 @@ impl MainState {
                 x: (SCREEN_WIDTH / 2.) - 45.,
                 y: SCREEN_HEIGHT - 50.,
             },
+            vel: Vel { dx: 0., dy: 0. }
         };
         Ok(MainState { ball, player })
     }
@@ -92,6 +94,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         // Move the ball on the screen
         self.ball.render();
         self.ball.check_wall_collision();
+        self.player.render();
         Ok(())
     }
 
@@ -114,6 +117,35 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
         canvas.finish(ctx)?;
 
+        Ok(())
+    }
+
+    fn key_up_event(&mut self, _ctx: &mut Context, _input: KeyInput) -> GameResult {
+        //println!(
+        //    "Key released: scancode {}, keycode {:?}, modifier {:?}",
+        //    _input.scancode, _input.keycode, _input.mods
+        //);
+        if Some(KeyCode::A) == _input.keycode || Some(KeyCode::L) == _input.keycode {
+            self.player.vel.dx = 0.;
+        }
+        Ok(())
+    }
+
+    fn key_down_event(
+        &mut self,
+        _ctx: &mut Context,
+        _input: KeyInput,
+        _repeat: bool,
+    ) -> GameResult {
+        //println!(
+        //    "Key pressed: scancode {}, keycode {:?}, modifier {:?}, repeat: {}",
+        //    input.scancode, input.keycode, input.mods, repeat
+        //);
+        if Some(KeyCode::A) == _input.keycode {
+            self.player.vel.dx = -1.;
+        } else if Some(KeyCode::L) == _input.keycode {
+            self.player.vel.dx = 1.;
+        }
         Ok(())
     }
 }
