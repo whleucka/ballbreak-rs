@@ -83,15 +83,6 @@ impl MainState {
         };
         Ok(MainState { ball, player })
     }
-    fn ball_player_collision(_player: &Player, _ball: &Ball) -> bool {
-        // Check if player hits ball
-        if _ball.pos.y >= _player.pos.y && _ball.pos.y <= _player.pos.y + _player.height {
-            if _ball.pos.x >= _player.pos.x && _ball.pos.x <= _player.pos.x + _player.width {
-                return true;
-            }
-        }
-        false
-    }
 }
 
 impl event::EventHandler<ggez::GameError> for MainState {
@@ -100,9 +91,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
         self.ball.render();
         self.ball.check_wall_collision();
         self.player.render();
-        if MainState::ball_player_collision(&self.player, &self.ball) {
-            self.ball.change_direction(0., -1.);
-        }
+        self.ball.check_player_collision(&self.player);
 
         Ok(())
     }

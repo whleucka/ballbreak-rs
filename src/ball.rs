@@ -1,6 +1,7 @@
 // Create a "Good game easily" lol ggez
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
+use crate::player::Player;
 use ggez::graphics;
 
 pub struct Ball {
@@ -28,6 +29,14 @@ impl Ball {
             self.vel.dy = -1.;
         } else if self.pos.y <= 0. {
             self.vel.dy = 1.;
+        }
+    }
+    pub fn check_player_collision(&mut self, _player: &Player) {
+        // Check if player hits ball
+        if self.pos.y >= _player.pos.y && self.pos.y <= _player.pos.y + _player.height {
+            if self.pos.x >= _player.pos.x && self.pos.x <= _player.pos.x + _player.width {
+                self.change_direction(0., -1.);
+            }
         }
     }
     pub fn change_direction(&mut self, dx: f32, dy: f32) {
