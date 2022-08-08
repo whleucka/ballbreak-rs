@@ -121,12 +121,10 @@ impl event::EventHandler<ggez::GameError> for MainState {
     }
 
     fn key_up_event(&mut self, _ctx: &mut Context, _input: KeyInput) -> GameResult {
-        //println!(
-        //    "Key released: scancode {}, keycode {:?}, modifier {:?}",
-        //    _input.scancode, _input.keycode, _input.mods
-        //);
-        if Some(KeyCode::A) == _input.keycode || Some(KeyCode::L) == _input.keycode {
-            self.player.vel.dx = 0.;
+        match _input.keycode {
+            Some(KeyCode::Escape) => event::request_quit(_ctx),
+            Some(_) => self.player.vel.dx = 0.,
+            None => {},
         }
         Ok(())
     }
@@ -137,14 +135,11 @@ impl event::EventHandler<ggez::GameError> for MainState {
         _input: KeyInput,
         _repeat: bool,
     ) -> GameResult {
-        //println!(
-        //    "Key pressed: scancode {}, keycode {:?}, modifier {:?}, repeat: {}",
-        //    input.scancode, input.keycode, input.mods, repeat
-        //);
-        if Some(KeyCode::A) == _input.keycode {
-            self.player.vel.dx = -1.;
-        } else if Some(KeyCode::L) == _input.keycode {
-            self.player.vel.dx = 1.;
+        match _input.keycode {
+            Some(KeyCode::A) => self.player.vel.dx = -1.,
+            Some(KeyCode::L) => self.player.vel.dx = 1.,
+            Some(_) => {},
+            None => {},
         }
         Ok(())
     }
