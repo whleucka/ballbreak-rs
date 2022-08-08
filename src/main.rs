@@ -19,16 +19,19 @@ mod ball;
 mod config;
 mod meta;
 mod player;
+mod bricks;
 
 // Imports
 use crate::ball::Ball;
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
 use crate::player::Player;
+use crate::bricks::Bricks;
 
 struct MainState {
     ball: Ball,
     player: Player,
+    bricks: Bricks,
 }
 
 impl MainState {
@@ -42,10 +45,8 @@ impl MainState {
             2., // tolerance
             Color::WHITE,
             // Note the )?; here <- this:
-            // It is a postfix operator that unwraps Result<T, E> and Option<T> values. If applied to Result<T, E> , it unwraps the result and gives you the inner value, propagating the error to the calling function.
+            // unwraps Result<T, E> and Option<T> values.
         )?;
-        // Otherwise, I guess we would want to 'unwrap' the value
-
         // Construct a ball
         let ball = Ball {
             circle,
@@ -57,6 +58,7 @@ impl MainState {
             },
             vel: Vel { dx: 1., dy: -1. },
         };
+
         // Player is a rectangle
         let rectangle = graphics::Mesh::new_rectangle(
             ctx,
@@ -81,13 +83,16 @@ impl MainState {
             },
             vel: Vel { dx: 0., dy: 0. },
         };
-        Ok(MainState { ball, player })
+        
+        // Bricks are collection of balls
+        let bricks = Bricks {};
+
+        Ok(MainState { ball, player, bricks })
     }
 }
 
 impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
-        // Move the ball on the screen
         self.ball.render();
         self.ball.check_wall_collision();
         self.player.render();
