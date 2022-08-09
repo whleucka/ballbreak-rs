@@ -46,7 +46,7 @@ impl Ball {
     pub fn calc_angle(&mut self, y2: f32, y1: f32, x2: f32, x1: f32) -> Angle<f32> {
         atan2(y2 - y1, x2 - x1) * 180. / std::f32::consts::PI
     }
-    pub fn check_brick_collision(&mut self, _bricks: &Bricks) -> Result<usize, &str> {
+    pub fn check_brick_collision(&mut self, _bricks: &Bricks) -> Option<usize> {
         for (i, brick) in _bricks.bricks.iter().enumerate() {
             let brick_x: f32 = brick.pos.x + brick.radius / 2.;
             let brick_y: f32 = brick.pos.y + brick.radius / 2.;
@@ -59,10 +59,10 @@ impl Ball {
                 let ball_dx: f32 = (angle * std::f32::consts::PI / 180.).cos();
                 let ball_dy: f32 = (angle * std::f32::consts::PI / 180.).sin();
                 self.change_direction(ball_dx, ball_dy);
-                return Ok(i);
+                return Some(i)
             }
         }
-        Err("No index here")
+        None
     }
     pub fn change_direction(&mut self, dx: f32, dy: f32) {
         if dx != 0. {

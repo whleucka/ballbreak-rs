@@ -140,12 +140,9 @@ impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         self.ball.render();
         self.ball.check_wall_collision();
-        let brick_index = match self.ball.check_brick_collision(&self.bricks) {
-            Ok(i) => Some(i),
-            Err(_) => None,
-        };
-        if brick_index.is_some() {
-            self.bricks.bricks.remove(brick_index.unwrap());
+        let idx = self.ball.check_brick_collision(&self.bricks);
+        if idx.is_some() {
+            self.bricks.bricks.remove(idx.unwrap());
         }
         self.player.render();
         self.ball.check_player_collision(&self.player);
