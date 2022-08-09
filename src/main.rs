@@ -91,25 +91,7 @@ impl MainState {
         };
 
         // Bricks are collection of balls
-        let circle = graphics::Mesh::new_circle(
-            ctx,
-            graphics::DrawMode::fill(),
-            vec2(0., 0.),
-            5., // r
-            2., // tolerance
-            Color::WHITE,
-            // Note the )?; here <- this:
-            // unwraps Result<T, E> and Option<T> values.
-        )?;
-        let brick = Brick {
-            circle,
-            radius: 5.,
-            pos: Pos {
-                x: 0.,
-                y: 0.,
-            },
-        };
-        let mut balls = vec![brick];
+        let mut balls = Vec::new();
         let start_x: f32 = ball.radius;
         let start_y: f32 = ball.radius + 15.;
         let rows: f32 = (SCREEN_WIDTH - start_x * 2.).floor();
@@ -126,8 +108,6 @@ impl MainState {
                     5., // r
                     2., // tolerance
                     Color::WHITE,
-                    // Note the )?; here <- this:
-                    // unwraps Result<T, E> and Option<T> values.
                 )?;
                 let brick = Brick {
                     circle,
@@ -158,6 +138,13 @@ impl event::EventHandler<ggez::GameError> for MainState {
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         self.ball.render();
         self.ball.check_wall_collision();
+        let brick_index = match self.ball.check_brick_collision(&self.bricks) {
+            Ok(i) => Some(i),
+            Err(_) => None,
+        };
+        if brick_index.is_some()  {
+            self.bricks.bricks.remove(brick_index.unwrap());
+        }
         self.player.render();
         self.ball.check_player_collision(&self.player);
 
@@ -181,15 +168,14 @@ impl event::EventHandler<ggez::GameError> for MainState {
             Vec2::new(self.player.pos.x, self.player.pos.y),
         );
 
-        // this is wrong! sooooo slow!
         // Draw the bricks on the screen
-//        for (i, brick) in self.bricks.bricks.iter().enumerate() {
-//            canvas.draw(
-//                &brick.circle,
-//                Vec2::new(brick.pos.x, brick.pos.y),
-//            );
-//        }
-//
+        for brick in self.bricks.bricks.iter() {
+            canvas.draw(
+                &brick.circle,
+                Vec2::new(brick.pos.x, brick.pos.y),
+            );
+        }
+
         canvas.finish(ctx)?;
 
         Ok(())
