@@ -17,19 +17,19 @@ use glam::*;
 
 // Includes
 mod ball;
+mod brick;
+mod bricks;
 mod config;
 mod meta;
 mod player;
-mod bricks;
-mod brick;
 
 // Imports
 use crate::ball::Ball;
+use crate::brick::Brick;
+use crate::bricks::Bricks;
 use crate::config::{SCREEN_HEIGHT, SCREEN_WIDTH};
 use crate::meta::{Pos, Vel};
 use crate::player::Player;
-use crate::bricks::Bricks;
-use crate::brick::Brick;
 
 struct MainState {
     ball: Ball,
@@ -112,25 +112,27 @@ impl MainState {
                 let brick = Brick {
                     circle,
                     radius: 5.,
-                    pos: Pos {
-                        x,
-                        y,
-                    },
+                    pos: Pos { x, y },
                 };
                 balls.push(brick);
             }
         }
 
-        let bricks = Bricks {
-            bricks: balls
-        };
+        let bricks = Bricks { bricks: balls };
 
         // Initial state
         let level: i32 = 1;
         let score: i32 = 0;
         let lives: i32 = 5;
 
-        Ok(MainState { ball, player, bricks, level, lives, score })
+        Ok(MainState {
+            ball,
+            player,
+            bricks,
+            level,
+            lives,
+            score,
+        })
     }
 }
 
@@ -142,7 +144,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
             Ok(i) => Some(i),
             Err(_) => None,
         };
-        if brick_index.is_some()  {
+        if brick_index.is_some() {
             self.bricks.bricks.remove(brick_index.unwrap());
         }
         self.player.render();
@@ -170,10 +172,7 @@ impl event::EventHandler<ggez::GameError> for MainState {
 
         // Draw the bricks on the screen
         for brick in self.bricks.bricks.iter() {
-            canvas.draw(
-                &brick.circle,
-                Vec2::new(brick.pos.x, brick.pos.y),
-            );
+            canvas.draw(&brick.circle, Vec2::new(brick.pos.x, brick.pos.y));
         }
 
         canvas.finish(ctx)?;
